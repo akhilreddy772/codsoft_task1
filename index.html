@@ -1038,6 +1038,63 @@
                 opacity: 1;
             }
         }
+
+        /* --- Modal Lightbox --- */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 10001;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(5px);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .modal.show {
+            display: flex;
+            opacity: 1;
+        }
+
+        .modal-content {
+            max-width: 800px;
+            width: 90%;
+            position: relative;
+            transform: scale(0.9);
+            transition: transform 0.4s ease;
+            margin: auto;
+        }
+
+        .modal.show .modal-content {
+            transform: scale(1);
+        }
+
+        .modal-content img {
+            width: 100%;
+            height: auto;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            border: 2px solid var(--accent-cyan);
+            display: block;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            color: var(--text-primary);
+            font-size: 30px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .close-modal:hover {
+            color: var(--accent-cyan);
+        }
     </style>
 </head>
 
@@ -1346,6 +1403,25 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Item 3 -->
+            <div class="timeline-item left">
+                <div class="timeline-dot"></div>
+                <div class="glass-card timeline-content">
+                    <span class="timeline-date">MAY 2026 – JUNE 2026</span>
+                    <h3>CodeAlpha</h3>
+                    <p style="color: var(--text-primary); margin-bottom: 5px;">Full Stack Development Intern</p>
+                    <p style="font-size: 14px; color: var(--text-secondary);">Selected for Full Stack Development
+                        internship focused on building modern web applications using industry-standard tools and
+                        frameworks.</p>
+                    <div class="badge-container" style="margin-top: 15px;">
+                        <span class="skill-badge" style="font-size: 10px; padding: 4px 10px;">HTML</span>
+                        <span class="skill-badge" style="font-size: 10px; padding: 4px 10px;">CSS</span>
+                        <span class="skill-badge" style="font-size: 10px; padding: 4px 10px;">JavaScript</span>
+                        <span class="skill-badge" style="font-size: 10px; padding: 4px 10px;">React</span>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -1358,34 +1434,39 @@
 
         <div class="certs-grid">
             <div class="glass-card cert-card reveal">
-                <i class="fab fa-google"></i>
-                <span class="cert-issuer">Google</span>
-                <h3 class="cert-title">Introduction to Generative AI</h3>
-                <a href="#" class="btn btn-outline" style="font-size: 12px; padding: 8px 20px;">View Certificate</a>
-            </div>
-
-            <div class="glass-card cert-card reveal">
                 <i class="fas fa-atom"></i>
                 <span class="cert-issuer">AICTE + IBM</span>
                 <h3 class="cert-title">Applied AI Internship Certificate</h3>
-                <a href="#" class="btn btn-outline" style="font-size: 12px; padding: 8px 20px;">View Certificate</a>
+                <button class="btn btn-outline" style="font-size: 12px; padding: 8px 20px;"
+                    onclick="openModal('cert-aicte.jpg')">View Certificate</button>
             </div>
 
-            <div class="glass-card cert-card reveal">
-                <i class="fas fa-terminal"></i>
-                <span class="cert-issuer">CodSoft</span>
-                <h3 class="cert-title">Web Development Internship</h3>
-                <a href="#" class="btn btn-outline" style="font-size: 12px; padding: 8px 20px;">View Certificate</a>
-            </div>
-
-            <!-- MongoDB Cert -->
             <div class="glass-card cert-card reveal">
                 <i class="fas fa-database"></i>
                 <span class="cert-issuer">MongoDB Inc.</span>
                 <h3 class="cert-title">MongoDB Certified Associate Developer</h3>
                 <p class="cert-desc">Industry-recognized certification validating MongoDB database skills including data
                     modeling, CRUD, indexing, and performance optimization.</p>
-                <a href="#" class="btn btn-outline" style="font-size: 12px; padding: 8px 20px;">View Certificate</a>
+                <button class="btn btn-outline" style="font-size: 12px; padding: 8px 20px;"
+                    onclick="openModal('cert-mongodb.jpg')">View Certificate</button>
+            </div>
+
+            <div class="glass-card cert-card reveal">
+                <i class="fas fa-terminal"></i>
+                <span class="cert-issuer">CodSoft</span>
+                <h3 class="cert-title">Web Development Internship</h3>
+                <button class="btn btn-outline" style="font-size: 12px; padding: 8px 20px;"
+                    onclick="openModal('cert-codsoft.jpg')">View Certificate</button>
+            </div>
+
+            <div class="glass-card cert-card reveal">
+                <i class="fas fa-laptop-code"></i>
+                <span class="cert-issuer">CodeAlpha</span>
+                <h3 class="cert-title">Full Stack Development Internship</h3>
+                <span style="font-size: 12px; color: var(--text-secondary); margin-bottom: 10px; display: block;">May
+                    2026 – June 2026</span>
+                <button class="btn btn-outline" style="font-size: 12px; padding: 8px 20px;"
+                    onclick="openModal('cert-codealpha.jpg')">View Certificate &rarr;</button>
             </div>
         </div>
     </section>
@@ -1670,6 +1751,40 @@
         const timelineObserver = new IntersectionObserver(timelineCallback, { threshold: 0.2 });
         timelineItems.forEach(item => timelineObserver.observe(item));
 
+    </script>
+
+    <!-- Certificate Modal -->
+    <div id="certModal" class="modal" onclick="closeModal(event)">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <span class="close-modal" onclick="closeModal(event)">&times;</span>
+            <img id="certImage" src="" alt="Certificate">
+        </div>
+    </div>
+
+    <script>
+        function openModal(imageSrc) {
+            const modal = document.getElementById('certModal');
+            const certImage = document.getElementById('certImage');
+            certImage.src = imageSrc;
+            modal.style.display = 'flex';
+            // Small delay to allow display flex to apply before opacity transition
+            setTimeout(() => {
+                modal.classList.add('show');
+            }, 10);
+            document.body.style.overflow = 'hidden'; // Prevent scrolling
+        }
+
+        function closeModal(event) {
+            if (event) {
+                event.stopPropagation();
+            }
+            const modal = document.getElementById('certModal');
+            modal.classList.remove('show');
+            setTimeout(() => {
+                modal.style.display = 'none';
+            }, 400); // Wait for transition
+            document.body.style.overflow = 'auto'; // Restore scrolling
+        }
     </script>
 </body>
 
